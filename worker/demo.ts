@@ -40,7 +40,7 @@ const OPEN: Sitting[] = [
         ago: 2,
         status: 'new',
         lines: [
-          [N('กะเพราไข่ดาว'), 1, { meat: ['crispy'], egg: ['fried'], spicy: ['mild'] }, 'ไม่ใส่ถั่วฝักยาว'],
+          [N('ข้าวกะเพรา'), 1, { meat: ['crispy'], egg: ['fried'], spicy: ['mild'] }, 'ไม่ใส่ถั่วฝักยาว'],
           [N('ข้าวผัด'), 1, { meat: ['shrimp'], egg: [] }],
           [N('น้ำเปล่า'), 2],
         ],
@@ -101,13 +101,13 @@ const OPEN: Sitting[] = [
 /** earlier today, already paid — feeds the sales screen */
 const PAID: Sitting[] = [
   [1, 300, [[N('ก๋วยเตี๋ยวหมูน้ำตก'), 2, { noodle: ['small'], size: ['normal'] }], [N('ชาไทย'), 2, { drink: ['iced'] }]]],
-  [4, 280, [[N('กะเพราไข่ดาว'), 2, { meat: ['pork'], egg: ['fried'] }], [N('น้ำเปล่า'), 2]]],
+  [4, 280, [[N('ข้าวกะเพรา'), 2, { meat: ['pork'], egg: ['fried'] }], [N('น้ำเปล่า'), 2]]],
   [6, 240, [[N('ก๋วยเตี๋ยวเนื้อตุ๋น'), 2, { noodle: ['big'], soup: ['clear'], size: ['special'] }], [N('ทับทิมกรอบ'), 2]]],
   [8, 200, [[N('ข้าวหมูกระเทียม'), 1, { egg: ['fried'] }], [N('ข้าวผัด'), 1, { meat: ['chicken'] }], [N('โอเลี้ยง'), 2]]],
   [10, 150, [[N('ก๋วยเตี๋ยวต้มยำหมู'), 3, { noodle: ['mee'], size: ['normal'] }], [N('ลูกชิ้นทอด'), 1], [N('ชาเขียวนม'), 1, { drink: ['frappe'] }]]],
   [12, 110, [[N('ผัดซีอิ๊ว'), 2, { meat: ['crispy'] }], [N('ไข่เจียวหมูสับ'), 1], [N('น้ำอัดลม'), 2]]],
   [1, 75, [[N('เย็นตาโฟทะเล'), 2, { noodle: ['big'], size: ['normal'] }], [N('ชาไทย'), 2, { drink: ['iced'] }]]],
-  [5, 50, [[N('กะเพราไข่ดาว'), 1, { meat: ['shrimp'], egg: ['fried'] }], [N('ก๋วยเตี๋ยวหมูน้ำตก'), 1, { noodle: ['egg'], size: ['normal'] }]]],
+  [5, 50, [[N('ข้าวกะเพรา'), 1, { meat: ['shrimp'], egg: ['fried'] }], [N('ก๋วยเตี๋ยวหมูน้ำตก'), 1, { noodle: ['egg'], size: ['normal'] }]]],
 ].map(([table, ago, lines]) => ({
   table: table as number,
   opened: (ago as number) + 35,
