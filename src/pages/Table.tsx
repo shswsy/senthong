@@ -260,7 +260,7 @@ function MenuView({
           </button>
         ))}
       </div>
-      <div className="menu wrap-narrow">
+      <div className="menu wrap-menu">
         {menu.categories.map((c) => {
           const list = menu.items.filter((i) => i.category_id === c.id)
           if (!list.length) return null

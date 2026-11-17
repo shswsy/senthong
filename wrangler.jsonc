@@ -13,7 +13,7 @@
     {
       "binding": "DB",
       "database_name": "senthong",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "2df3a775-9773-4af5-8707-ab565a2f3cc3",
       "migrations_dir": "migrations"
     }
   ],

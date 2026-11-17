@@ -98,6 +98,12 @@ code {
   margin-inline: auto;
 }
 
+/* customer menu: phone-first, but uses the width on tablets / desktops */
+.wrap-menu {
+  width: min(1180px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
 .eyebrow {
   margin: 0 0 6px;
   font: 600 14px/1.4 var(--display);
@@ -318,7 +324,7 @@ code {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px max(16px, calc((100% - 760px) / 2));
+  padding: 12px max(16px, calc((100% - 1180px) / 2));
   background: var(--red);
   color: #fff;
 }
@@ -374,9 +380,9 @@ code {
   top: 0;
   z-index: 10;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 280px));
   gap: 4px;
-  padding: 8px max(16px, calc((100% - 760px) / 2));
+  padding: 8px max(16px, calc((100% - 1180px) / 2));
   background: var(--paper);
   border-bottom: 1px solid var(--line);
 }
@@ -418,7 +424,7 @@ code {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding: 10px max(16px, calc((100% - 760px) / 2));
+  padding: 10px max(16px, calc((100% - 1180px) / 2));
   background: rgb(251 245 234 / 0.94);
   backdrop-filter: blur(8px);
   scrollbar-width: none;
@@ -552,6 +558,12 @@ code {
   }
 }
 
+@media (min-width: 1080px) {
+  .menu-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 /* cart bar */
 .cart-bar {
   position: fixed;
@@ -562,7 +574,7 @@ code {
   display: flex;
   align-items: center;
   gap: 12px;
-  width: min(728px, 100% - 24px);
+  width: min(560px, 100% - 24px);
   min-height: 58px;
   padding: 8px 20px 8px 10px;
   border: 0;
