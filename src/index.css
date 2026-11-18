@@ -3301,7 +3301,8 @@ code {
   bottom: calc(92px + env(safe-area-inset-bottom));
 }
 
-.olines .q {
+.olines .q,
+.billp-lines .q {
   font-family: var(--body);
 }
 
