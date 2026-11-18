@@ -3,6 +3,7 @@ import { PRESETS, PRESET_IDS, baht, clock, type Art, type MenuItem } from '../..
 import type { MenuResponse, QrTable, SalesResponse, TableState, TableSummary } from '../../shared/types'
 import { api, send } from '../api'
 import { ART_KEYS, Food, Logo } from '../components/Food'
+import { Icon } from '../components/Icon'
 import { Qr } from '../components/Qr'
 import { StaffGate } from '../components/Staff'
 import { useToast } from '../components/Toast'
@@ -123,7 +124,7 @@ function TablesTab({ rev }: { rev: number }) {
                     </span>
                   </>
                 )}
-                {t.calls > 0 && st !== 'bill' && <span className="tcell-bell" title="เรียกพนักงาน">🔔</span>}
+                {t.calls > 0 && st !== 'bill' && <span className="tcell-bell" title="เรียกพนักงาน"><Icon name="bell" size={18} /></span>}
               </button>
             )
           })}

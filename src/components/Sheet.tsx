@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react'
+import { Icon } from './Icon'
 
 /** Bottom sheet on phones, centered dialog on wide screens. Esc / backdrop closes. */
 export function Sheet({
@@ -51,11 +52,12 @@ export function Sheet({
   return (
     <div className="sheet-wrap" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="sheet" role="dialog" aria-modal="true" aria-labelledby={id} ref={box}>
+        <span className="sheet-grab" aria-hidden="true" />
         {hero && <div className="sheet-hero">{hero}</div>}
         <div className="sheet-head">
           <h2 id={id}>{title}</h2>
           <button className="icon-btn" onClick={onClose} aria-label="ปิด" data-autofocus>
-            ✕
+            <Icon name="close" size={20} />
           </button>
         </div>
         <div className="sheet-body">{children}</div>
