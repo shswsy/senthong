@@ -3,16 +3,23 @@ import { clock, type OrderStatus } from '../../shared/menu'
 import type { KitchenResponse, OrderView } from '../../shared/types'
 import { api, send } from '../api'
 import { Logo } from '../components/Food'
+import { Icon } from '../components/Icon'
 import { StaffGate } from '../components/Staff'
 import { useToast } from '../components/Toast'
 import { ago, useLive, useNow } from '../live'
 import { Link } from '../router'
 
-const COLS: { status: OrderStatus; title: string; next: OrderStatus; action: string; back?: OrderStatus }[] = [
+type Col = { status: OrderStatus; title: string; next?: OrderStatus; action?: string; back?: OrderStatus }
+
+const COLS: Col[] = [
   { status: 'new', title: 'ออเดอร์ใหม่', next: 'cooking', action: 'เริ่มทำ' },
   { status: 'cooking', title: 'กำลังทำ', next: 'ready', action: 'เสร็จ · พร้อมเสิร์ฟ', back: 'new' },
   { status: 'ready', title: 'พร้อมเสิร์ฟ', next: 'served', action: 'เสิร์ฟแล้ว', back: 'cooking' },
+  { status: 'served', title: 'เพิ่งเสิร์ฟ', back: 'ready' },
 ]
+
+/** how many just-served tickets this screen keeps around (for undo) */
+const RECENT = 6
 
 export default function Kitchen() {
   return <StaffGate title="จอครัว">{(logout) => <Board logout={logout} />}</StaffGate>
@@ -44,6 +51,8 @@ function Board({ logout }: { logout: () => void }) {
   const [fresh, setFresh] = useState<Set<number>>(new Set())
   const [confirm, setConfirm] = useState<number | null>(null)
   const [sound, setSound] = useState(false)
+  // served orders drop out of the kitchen feed; keep the last few here so a mis-tap can be undone
+  const [served, setServed] = useState<OrderView[]>([])
   const audio = useRef<AudioContext | null>(null)
   const seen = useRef<Set<number> | null>(null)
   const toast = useToast()
@@ -55,6 +64,7 @@ function Board({ logout }: { logout: () => void }) {
       setSkew(r.now - Date.now())
       setData(r)
       const ids = r.orders.map((o) => o.id)
+      setServed((s) => s.filter((o) => !ids.includes(o.id)))
       if (seen.current) {
         const added = ids.filter((id) => !seen.current!.has(id))
         if (added.length) {
@@ -103,11 +113,18 @@ function Board({ logout }: { logout: () => void }) {
 
   const move = async (o: OrderView, status: OrderStatus) => {
     setConfirm(null)
-    setData((d) => d && { ...d, orders: d.orders.map((x) => (x.id === o.id ? { ...x, status, updated_at: Date.now() } : x)).filter((x) => x.status !== 'served' && x.status !== 'cancelled') })
+    const moved = { ...o, status, updated_at: Date.now() }
+    setData((d) => d && { ...d, orders: d.orders.map((x) => (x.id === o.id ? moved : x)).filter((x) => x.status !== 'served' && x.status !== 'cancelled') })
+    if (status === 'served') setServed((s) => [moved, ...s.filter((x) => x.id !== o.id)].slice(0, RECENT))
+    if (o.status === 'served') {
+      setServed((s) => s.filter((x) => x.id !== o.id))
+      setData((d) => d && { ...d, orders: [...d.orders, moved].sort((a, b) => a.created_at - b.created_at) })
+    }
     try {
       await send(`/staff/orders/${o.id}`, 'PATCH', { status })
     } catch (e) {
       toast((e as Error).message, 'warn')
+      if (status === 'served') setServed((s) => s.filter((x) => x.id !== o.id))
     }
     load()
   }
@@ -118,24 +135,54 @@ function Board({ logout }: { logout: () => void }) {
     load()
   }
 
+  const orders = data?.orders ?? []
+  const count = (s: OrderStatus) => orders.filter((o) => o.status === s).length
+  const oldest = orders.filter((o) => o.status !== 'ready').reduce((m, o) => Math.min(m, o.created_at), Infinity)
+  const oldestMin = Number.isFinite(oldest) ? Math.floor((now - oldest) / 60_000) : null
+
   return (
     <div className="kitchen">
       <header className="k-top">
         <div className="k-brand">
           <Logo className="logo" />
-          <b>จอครัว</b>
-          <span className={`live-pill ${online ? 'on' : ''}`}>{online ? 'สด' : 'กำลังเชื่อมต่อ…'}</span>
+          <div>
+            <b>จอครัว</b>
+            <span className={`live-pill ${online ? 'on' : ''}`}>{online ? 'เชื่อมต่อสด' : 'กำลังเชื่อมต่อ…'}</span>
+          </div>
         </div>
+        <dl className="k-stats" aria-label="สรุปตอนนี้">
+          <div className="ks-new">
+            <dt>ใหม่</dt>
+            <dd>{count('new')}</dd>
+          </div>
+          <div className="ks-cooking">
+            <dt>กำลังทำ</dt>
+            <dd>{count('cooking')}</dd>
+          </div>
+          <div className="ks-ready">
+            <dt>รอเสิร์ฟ</dt>
+            <dd>{count('ready')}</dd>
+          </div>
+          <div className={`ks-wait ${oldestMin !== null && oldestMin >= 20 ? 'late' : oldestMin !== null && oldestMin >= 10 ? 'slow' : ''}`}>
+            <dt>รอนานสุด</dt>
+            <dd>{oldestMin === null ? '–' : `${oldestMin} น.`}</dd>
+          </div>
+        </dl>
         <div className="k-tools">
-          <span className="k-clock">{clock(now)}</span>
-          <button className={`btn btn-sm ${sound ? 'btn-gold' : 'btn-dark'}`} onClick={toggleSound} aria-pressed={sound}>
-            {sound ? '🔔 เสียงเปิด' : '🔕 เปิดเสียงแจ้งเตือน'}
+          <span className="k-clock">
+            <Icon name="clock" size={18} />
+            {clock(now)}
+          </span>
+          <button className={`btn btn-sm ${sound ? 'btn-gold' : 'btn-ghost'}`} onClick={toggleSound} aria-pressed={sound}>
+            <Icon name={sound ? 'bell' : 'mute'} size={18} />
+            {sound ? 'เสียงเปิด' : 'เปิดเสียง'}
           </button>
-          <Link to="/admin" className="btn btn-sm btn-dark">
+          <Link to="/admin" className="btn btn-sm btn-ghost">
+            <Icon name="store" size={18} />
             หลังร้าน
           </Link>
-          <button className="btn btn-sm btn-link-light" onClick={logout}>
-            ออก
+          <button className="btn btn-sm btn-icon" onClick={logout} aria-label="ออกจากระบบ" title="ออกจากระบบ">
+            <Icon name="logout" size={18} />
           </button>
         </div>
       </header>
@@ -144,10 +191,12 @@ function Board({ logout }: { logout: () => void }) {
         <div className="k-calls" aria-label="โต๊ะที่เรียก">
           {data.calls.map((c) => (
             <div key={c.id} className={`k-call ${c.kind}`}>
+              <Icon name={c.kind === 'bill' ? 'receipt' : 'hand'} size={22} />
               <b>โต๊ะ {c.table_label}</b>
               <span>{c.kind === 'bill' ? 'เรียกเช็คบิล' : 'เรียกพนักงาน'}</span>
               <small>{ago(now, c.created_at)}</small>
               <button className="btn btn-sm" onClick={() => resolve(c.id)}>
+                <Icon name="check" size={16} />
                 รับทราบ
               </button>
             </div>
@@ -160,71 +209,144 @@ function Board({ logout }: { logout: () => void }) {
       ) : (
         <div className="k-cols">
           {COLS.map((col) => {
-            const list = data.orders.filter((o) => o.status === col.status)
+            const list = col.status === 'served' ? served : orders.filter((o) => o.status === col.status)
             return (
               <section key={col.status} className={`k-col c-${col.status}`} aria-labelledby={`kc-${col.status}`}>
                 <h2 id={`kc-${col.status}`}>
-                  {col.title} <span>{list.length}</span>
+                  <i aria-hidden="true" />
+                  {col.title}
+                  <span>{list.length}</span>
                 </h2>
-                {list.length === 0 && <p className="k-empty">ไม่มีออเดอร์</p>}
-                {list.map((o) => {
-                  const wait = Math.floor((now - o.created_at) / 60_000)
-                  return (
-                    <article key={o.id} className={`k-card ${fresh.has(o.id) ? 'is-fresh' : ''} ${wait >= 20 ? 'late' : wait >= 10 ? 'slow' : ''}`}>
-                      <header>
-                        <b className="k-table">โต๊ะ {o.table_label}</b>
-                        <span className="k-meta">
-                          #{o.id} · {clock(o.created_at)}
-                        </span>
-                        <span className="k-wait">{ago(now, o.created_at)}</span>
-                      </header>
-                      <ul>
-                        {o.lines.map((l, i) => (
-                          <li key={i}>
-                            <span className="q">{l.qty}</span>
-                            <span>
-                              <b>{l.name}</b>
-                              {l.options && <small>{l.options}</small>}
-                              {l.note && <em>⚠ {l.note}</em>}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                      <footer>
-                        <button className="btn btn-primary btn-block" onClick={() => move(o, col.next)}>
-                          {col.action}
-                        </button>
-                        <div className="k-sub">
-                          {col.back && (
-                            <button className="btn-text" onClick={() => move(o, col.back!)}>
-                              ← ย้อนสถานะ
-                            </button>
-                          )}
-                          {col.status === 'new' &&
-                            (confirm === o.id ? (
-                              <>
-                                <button className="btn-text danger" onClick={() => move(o, 'cancelled')}>
-                                  ยืนยันยกเลิก
-                                </button>
-                                <button className="btn-text" onClick={() => setConfirm(null)}>
-                                  ไม่ยกเลิก
-                                </button>
-                              </>
-                            ) : (
-                              <button className="btn-text" onClick={() => setConfirm(o.id)}>
-                                ยกเลิกออเดอร์
-                              </button>
-                            ))}
-                        </div>
-                      </footer>
-                    </article>
-                  )
-                })}
+                <div className="k-list">
+                  {list.length === 0 && (
+                    <p className="k-empty">{col.status === 'served' ? 'ออเดอร์ที่เสิร์ฟจะอยู่ที่นี่ชั่วคราว กดย้อนได้ถ้ากดพลาด' : 'ไม่มีออเดอร์'}</p>
+                  )}
+                  {list.map((o) =>
+                    col.status === 'served' ? (
+                      <article key={o.id} className="k-card is-done">
+                        <header>
+                          <b className="k-table">
+                            <small>โต๊ะ</small>
+                            {o.table_label}
+                          </b>
+                          <span className="k-meta">
+                            #{o.id} · {o.lines.reduce((s, l) => s + l.qty, 0)} รายการ
+                          </span>
+                          <button className="btn-undo" onClick={() => move(o, 'ready')}>
+                            <Icon name="undo" size={16} />
+                            ย้อน
+                          </button>
+                        </header>
+                      </article>
+                    ) : (
+                      <Ticket
+                        key={o.id}
+                        o={o}
+                        col={col}
+                        now={now}
+                        fresh={fresh.has(o.id)}
+                        confirming={confirm === o.id}
+                        onMove={(s) => move(o, s)}
+                        onConfirm={(on) => setConfirm(on ? o.id : null)}
+                      />
+                    ),
+                  )}
+                </div>
               </section>
             )
           })}
         </div>
       )}
     </div>
+  )
+}
+
+function Ticket({
+  o,
+  col,
+  now,
+  fresh,
+  confirming,
+  onMove,
+  onConfirm,
+}: {
+  o: OrderView
+  col: Col
+  now: number
+  fresh: boolean
+  confirming: boolean
+  onMove: (s: OrderStatus) => void
+  onConfirm: (on: boolean) => void
+}) {
+  const wait = Math.floor((now - o.created_at) / 60_000)
+  const box = useRef<HTMLElement>(null)
+  // bring a just-arrived ticket into view inside its column
+  useEffect(() => {
+    if (fresh) box.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  }, [fresh])
+  return (
+    <article ref={box} className={`k-card ${fresh ? 'is-fresh' : ''} ${wait >= 20 ? 'late' : wait >= 10 ? 'slow' : ''}`}>
+      <header>
+        <b className="k-table">
+          <small>โต๊ะ</small>
+          {o.table_label}
+        </b>
+        <span className="k-meta">
+          {fresh && <em className="k-new">ใหม่</em>}#{o.id} · สั่ง {clock(o.created_at)}
+        </span>
+        <span className="k-wait">
+          <Icon name="clock" size={15} />
+          {ago(now, o.created_at)}
+        </span>
+      </header>
+      <ul>
+        {o.lines.map((l, i) => (
+          <li key={i}>
+            <span className="q">{l.qty}</span>
+            <span>
+              <b>{l.name}</b>
+              {l.options && <small>{l.options}</small>}
+              {l.note && (
+                <em>
+                  <Icon name="alert" size={15} />
+                  {l.note}
+                </em>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <footer>
+        <div className="k-actions">
+          {col.back && (
+            <button className="btn-undo" onClick={() => onMove(col.back!)} aria-label="ย้อนสถานะ" title="ย้อนสถานะ">
+              <Icon name="undo" size={18} />
+            </button>
+          )}
+          <button className="btn btn-go btn-block" onClick={() => onMove(col.next!)}>
+            {col.action}
+            <Icon name="next" size={18} />
+          </button>
+        </div>
+        {col.status === 'new' && (
+          <div className="k-sub">
+            {confirming ? (
+              <>
+                <button className="btn-text danger" onClick={() => onMove('cancelled')}>
+                  ยืนยันยกเลิก
+                </button>
+                <button className="btn-text" onClick={() => onConfirm(false)}>
+                  ไม่ยกเลิก
+                </button>
+              </>
+            ) : (
+              <button className="btn-text" onClick={() => onConfirm(true)}>
+                ยกเลิกออเดอร์
+              </button>
+            )}
+          </div>
+        )}
+      </footer>
+    </article>
   )
 }
