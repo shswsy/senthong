@@ -13,7 +13,7 @@
   --line: #eadfcc;
   --line-2: #f1e8d8;
   --text: #241e19;
-  --muted: #776b5d;
+  --muted: #6a5f52; /* was #776b5d, 4.4:1 on paper-2 */
   --green: #2f7d4a;
   --orange: #d9731c;
   --display: 'Prompt', 'IBM Plex Sans Thai', system-ui, sans-serif;
@@ -69,9 +69,18 @@ a {
   color: var(--red);
 }
 
-:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 2px;
+/* two-tone focus: gold hugs the control, soy-brown ring outside it. Gold alone was ~1.7:1 on the
+   cream surfaces; the brown ring carries contrast there, the gold on dark (brown / chili) fills. */
+/* :root raises specificity so button lip shadows don't hide the gold ring while focused */
+:root :focus-visible {
+  outline: 2px solid var(--brown);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--gold);
+}
+
+/* on the chili-red hero the brown ring is only 2.5:1; white is 5.9:1 */
+:root .h-hero :focus-visible {
+  outline-color: #fff;
 }
 
 code {
@@ -1129,6 +1138,7 @@ code {
 .iform select:focus {
   outline: none;
   border-color: var(--brown);
+  box-shadow: 0 0 0 3px var(--gold), 0 0 0 5px var(--brown);
 }
 
 .sheet-foot {
@@ -2001,8 +2011,9 @@ code {
 }
 
 .k-card:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 2px;
+  outline: 2px solid var(--brown);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--gold);
 }
 
 .k-card.is-fresh {
@@ -3053,7 +3064,7 @@ code {
 }
 
 .h-hero .eyebrow {
-  color: var(--gold-2);
+  color: #ffe7a0; /* gold-2 was 4.2:1 on chili red */
 }
 
 .h-hero h1 {
@@ -3087,7 +3098,7 @@ code {
 .h-pw {
   margin: 16px 0 0;
   font-size: 14px;
-  color: #fbd2cf;
+  color: #fff; /* #fbd2cf was 4.3:1 on chili red */
 }
 
 .h-pw code {
