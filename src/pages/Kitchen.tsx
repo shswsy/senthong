@@ -126,6 +126,13 @@ function Board({ logout }: { logout: () => void }) {
   }
 
   const move = async (o: OrderView, status: OrderStatus) => {
+    // the focused button is about to unmount with its card: hand focus to the neighbour in the same
+    // column, or to the moved card in its new column
+    const here = document.getElementById(`ticket-${o.id}`)
+    const hadFocus = !!here?.contains(document.activeElement)
+    const sib = (here?.nextElementSibling ?? here?.previousElementSibling) as HTMLElement | null
+    const target = sib?.id?.startsWith('ticket-') ? sib.id : `ticket-${o.id}`
+    if (hadFocus) requestAnimationFrame(() => document.getElementById(target)?.focus({ preventScroll: true }))
     setConfirm(null)
     markSeen(o.id)
     const moved = { ...o, status, updated_at: Date.now() }
@@ -308,6 +315,15 @@ function Ticket({
 }) {
   const wait = Math.floor((now - o.created_at) / 60_000)
   const box = useRef<HTMLElement>(null)
+  const yes = useRef<HTMLButtonElement>(null)
+  const ask = useRef<HTMLButtonElement>(null)
+  const asked = useRef(false)
+  // inline confirm swaps buttons: move focus to the one that replaced the pressed one
+  useEffect(() => {
+    if (confirming) yes.current?.focus()
+    else if (asked.current) ask.current?.focus()
+    asked.current = confirming
+  }, [confirming])
   // never scroll the board for the cook (that pushed the oldest ticket off screen);
   // just note when an arrival has actually been on screen so the "+N ใหม่" pill can drop it
   useEffect(() => {
@@ -365,7 +381,7 @@ function Ticket({
           <div className="k-sub">
             {confirming ? (
               <>
-                <button className="btn-text danger" onClick={() => onMove('cancelled')}>
+                <button className="btn-text danger" ref={yes} onClick={() => onMove('cancelled')}>
                   ยืนยันยกเลิก
                 </button>
                 <button className="btn-text" onClick={() => onConfirm(false)}>
@@ -373,7 +389,7 @@ function Ticket({
                 </button>
               </>
             ) : (
-              <button className="btn-text" onClick={() => onConfirm(true)}>
+              <button className="btn-text" ref={ask} onClick={() => onConfirm(true)}>
                 ยกเลิกออเดอร์
               </button>
             )}

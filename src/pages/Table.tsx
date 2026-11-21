@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import {
   MAX_QTY,
   NOTE_MAX,
@@ -154,6 +154,7 @@ export default function Table({ token }: { token: string }) {
       setCartOpen(false)
       setView('orders')
       window.scrollTo({ top: 0 })
+      requestAnimationFrame(() => document.getElementById('orders-h')?.focus({ preventScroll: true }))
       toast('ส่งออเดอร์แล้ว ครัวได้รับเรียบร้อย', 'ok')
     } catch (e) {
       toast((e as Error).message, 'warn')
@@ -223,10 +224,23 @@ export default function Table({ token }: { token: string }) {
               <span>ก๋วยเตี๋ยว & อาหารตามสั่ง</span>
             </div>
           </div>
-          <div className="table-badge" title={online ? 'เชื่อมต่อสด' : 'กำลังเชื่อมต่อ…'}>
-            <i className={`live-dot ${online ? 'on' : ''}`} aria-hidden="true" />
-            <small>โต๊ะ</small>
-            <b>{state.table.label}</b>
+          <div className="top-right">
+            <button
+              type="button"
+              className="call-btn"
+              onClick={() => call('waiter')}
+              disabled={state.calls.waiter}
+              aria-label={state.calls.waiter ? 'เรียกพนักงานแล้ว' : 'เรียกพนักงาน'}
+              title={state.calls.waiter ? 'เรียกพนักงานแล้ว' : 'เรียกพนักงาน'}
+            >
+              <Icon name={state.calls.waiter ? 'check' : 'hand'} size={20} />
+            </button>
+            <div className="table-badge" title={online ? 'เชื่อมต่อสด' : 'กำลังเชื่อมต่อ…'}>
+              <i className={`live-dot ${online ? 'on' : ''}`} aria-hidden="true" />
+              <span className="sr-only">{online ? 'เชื่อมต่อสด' : 'กำลังเชื่อมต่อ'}</span>
+              <small>โต๊ะ</small>
+              <b>{state.table.label}</b>
+            </div>
           </div>
         </div>
         <div className="wrap-menu">
@@ -366,7 +380,7 @@ function MenuView({
   onAdd: (i: MenuItem) => void
   onOpen: (i: MenuItem) => void
 }) {
-  const chips = useRef<HTMLDivElement>(null)
+  const chips = useRef<HTMLElement>(null)
   const lock = useRef(0)
   const cats = menu.categories.filter((c) => menu.items.some((i) => i.category_id === c.id))
   const current = cat ?? cats[0]?.id ?? null
@@ -389,7 +403,7 @@ function MenuView({
   // keep the active chip visible inside the horizontal strip
   useEffect(() => {
     const box = chips.current
-    const el = box?.querySelector<HTMLElement>('[aria-selected="true"]')
+    const el = box?.querySelector<HTMLElement>('[aria-current="true"]')
     if (box && el) box.scrollTo({ left: el.offsetLeft - box.clientWidth / 2 + el.offsetWidth / 2, behavior: 'smooth' })
   }, [current])
 
@@ -418,13 +432,13 @@ function MenuView({
       </section>
 
       <div className="chips-bar">
-        <div className="chips wrap-menu" role="tablist" aria-label="หมวดเมนู" ref={chips}>
+        <nav className="chips wrap-menu" aria-label="หมวดเมนู" ref={chips}>
           {cats.map((c) => (
-            <button key={c.id} role="tab" aria-selected={current === c.id} onClick={() => jump(c.id)}>
+            <button key={c.id} aria-current={current === c.id ? 'true' : undefined} onClick={() => jump(c.id)}>
               {c.name}
             </button>
           ))}
-        </div>
+        </nav>
       </div>
 
       <div className="menu wrap-menu">
@@ -505,6 +519,19 @@ function ItemSheet({
     if (r.ok && item.available) onAdd(item, picks, qty, note.trim())
   }
 
+  // radio-group keyboard model: arrows move the selection and focus together
+  const arrow = (e: KeyboardEvent<HTMLDivElement>, gid: string, ids: string[], required: boolean) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]
+    if (!step) return
+    e.preventDefault()
+    const group = e.currentTarget // React clears currentTarget after the handler returns
+    const cur = ids.indexOf((picks[gid] ?? [])[0] ?? ids[0])
+    const next = ids[(cur + step + ids.length) % ids.length]
+    setPicks((p) => ({ ...p, [gid]: [next] }))
+    void required
+    requestAnimationFrame(() => group.querySelector<HTMLElement>(`[data-choice="${next}"]`)?.focus())
+  }
+
   return (
     <Sheet
       title={item.name}
@@ -522,13 +549,20 @@ function ItemSheet({
           <fieldset key={g.id} className="opt">
             <legend>
               {g.name}
-              <small className={g.required ? 'req' : ''}>
-                {g.required ? 'ต้องเลือก 1' : g.type === 'many' ? 'ไม่บังคับ · เลือกได้หลายอย่าง' : 'ไม่บังคับ'}
+              {/* a required group turns neutral with a check once something is picked */}
+              <small className={g.required && !(picks[g.id] ?? []).length ? 'req' : g.required ? 'req-ok' : ''}>
+                {g.required ? ((picks[g.id] ?? []).length ? 'เลือกแล้ว' : 'ต้องเลือก 1') : g.type === 'many' ? 'ไม่บังคับ · เลือกได้หลายอย่าง' : 'ไม่บังคับ'}
               </small>
             </legend>
-            <div className="opt-row">
-              {g.choices.map((ch) => {
+            <div
+              className="opt-row"
+              role={g.type === 'one' ? 'radiogroup' : 'group'}
+              aria-label={g.name}
+              onKeyDown={g.type === 'one' ? (e) => arrow(e, g.id, g.choices.map((c) => c.id), g.required) : undefined}
+            >
+              {g.choices.map((ch, ci) => {
                 const on = (picks[g.id] ?? []).includes(ch.id)
+                const anyOn = (picks[g.id] ?? []).length > 0
                 return (
                   <button
                     type="button"
@@ -536,6 +570,8 @@ function ItemSheet({
                     className="pill"
                     role={g.type === 'one' ? 'radio' : 'checkbox'}
                     aria-checked={on}
+                    tabIndex={g.type === 'one' ? (on || (!anyOn && ci === 0) ? 0 : -1) : undefined}
+                    data-choice={ch.id}
                     onClick={() => toggle(g.id, ch.id, g.type === 'one', g.required)}
                   >
                     {on && <Icon name="check" size={16} />}
@@ -609,6 +645,9 @@ function OrdersView({ state, onCall, onMenu }: { state: TableState; onCall: (k: 
   const billAsked = state.calls.bill || !!state.session.bill_requested_at
   return (
     <div className="orders wrap-menu">
+      <h2 id="orders-h" className="sr-only" tabIndex={-1}>
+        ออเดอร์ของโต๊ะนี้
+      </h2>
       <div className="orders-list">
         {orders.map((o) => (
           <OrderCard key={o.id} o={o} />
