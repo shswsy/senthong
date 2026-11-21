@@ -41,19 +41,49 @@ export default function Table({ token }: { token: string }) {
 
   useEffect(() => store.set(`st:cart:${token}`, cart), [cart, token])
 
-  const loadMenu = useCallback(() => api<MenuResponse>('/menu').then(setMenu, () => {}), [])
+  // last load failure; only shown while there is nothing on screen yet (later failures keep the last good data)
+  const [menuErr, setMenuErr] = useState('')
+  const [stateErr, setStateErr] = useState('')
+  const loadErr = menuErr || stateErr
+  const [retrying, setRetrying] = useState(false)
+  const offline = useOffline()
+
+  const loadMenu = useCallback(
+    () =>
+      api<MenuResponse>('/menu').then(
+        (m) => {
+          setMenu(m)
+          setMenuErr('')
+        },
+        (e: ApiError) => setMenuErr(e.message),
+      ),
+    [],
+  )
   const loadState = useCallback(
     () =>
-      api<TableState>(`/t/${token}`).then(setState, (e: ApiError) => {
-        if (e.status === 404) setFatal(e.message)
-      }),
+      api<TableState>(`/t/${token}`).then(
+        (s) => {
+          setState(s)
+          setStateErr('')
+        },
+        (e: ApiError) => {
+          if (e.status === 404) setFatal(e.message)
+          else setStateErr(e.message)
+        },
+      ),
     [token],
   )
 
-  useEffect(() => {
-    loadMenu()
-    loadState()
+  const reload = useCallback(async () => {
+    setRetrying(true)
+    await Promise.all([loadMenu(), loadState()])
+    setRetrying(false)
   }, [loadMenu, loadState])
+
+  // first load, and again straight away when the network comes back (instead of waiting for the 30 s sync)
+  useEffect(() => {
+    if (!offline) reload()
+  }, [offline, reload])
 
   // tell the customer when something of theirs changes
   useEffect(() => {
@@ -151,7 +181,27 @@ export default function Table({ token }: { token: string }) {
       </div>
     )
 
-  if (!menu || !state) return <p className="loading">กำลังโหลดเมนู…</p>
+  if (!menu || !state) {
+    if (!loadErr && !offline) return <p className="loading">กำลังโหลดเมนู…</p>
+    return (
+      <div className="cust-empty load-fail wrap-narrow" role="alert">
+        <span className="fail-ico">
+          <Icon name="wifiOff" size={40} />
+        </span>
+        <h1>{offline ? 'ไม่มีสัญญาณอินเทอร์เน็ต' : 'โหลดเมนูไม่สำเร็จ'}</h1>
+        <p>
+          {offline
+            ? 'ลองเชื่อม Wi-Fi ของร้านหรือเปิดเน็ตมือถือ เมนูจะโหลดเองทันทีที่ต่อได้'
+            : `${loadErr} กดลองอีกครั้ง หรือเรียกพนักงานที่เคาน์เตอร์ได้เลย`}
+        </p>
+        <button className="btn btn-primary btn-lg" onClick={reload} disabled={retrying}>
+          <Icon name="refresh" size={20} />
+          {retrying ? 'กำลังลองใหม่…' : 'ลองอีกครั้ง'}
+        </button>
+        {cart.length > 0 && <p className="hint">ของในตะกร้ายังอยู่ครบ ไม่ต้องเลือกใหม่</p>}
+      </div>
+    )
+  }
 
   const active = state.orders.filter((o) => o.status !== 'cancelled')
   const waiting = active.filter((o) => o.status !== 'served').length
@@ -191,6 +241,13 @@ export default function Table({ token }: { token: string }) {
           </nav>
         </div>
       </header>
+
+      {offline && (
+        <p className="offline-bar wrap-menu" role="status">
+          <Icon name="wifiOff" size={18} />
+          ออฟไลน์อยู่ ดูเมนูได้ตามปกติ แต่ต้องต่อเน็ตก่อนส่งออเดอร์
+        </p>
+      )}
 
       {view === 'menu' ? (
         <MenuView
@@ -274,6 +331,22 @@ export default function Table({ token }: { token: string }) {
       )}
     </div>
   )
+}
+
+/** true while the browser says there is no network (best effort: navigator.onLine can be optimistic) */
+function useOffline() {
+  const [off, setOff] = useState(() => typeof navigator !== 'undefined' && !navigator.onLine)
+  useEffect(() => {
+    const on = () => setOff(false)
+    const down = () => setOff(true)
+    window.addEventListener('online', on)
+    window.addEventListener('offline', down)
+    return () => {
+      window.removeEventListener('online', on)
+      window.removeEventListener('offline', down)
+    }
+  }, [])
+  return off
 }
 
 function MenuView({

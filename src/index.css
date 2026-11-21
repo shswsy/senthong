@@ -1541,6 +1541,39 @@ code {
   text-align: center;
 }
 
+.load-fail {
+  min-height: 70vh;
+  align-content: center;
+  padding-inline: 16px;
+}
+
+.fail-ico {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: #f6ead9;
+  color: var(--brown);
+}
+
+.offline-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block: 10px 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #fbefd2;
+  border: 1px solid #ecd39a;
+  color: var(--brown);
+  font-size: 14px;
+}
+
+.offline-bar svg {
+  flex: none;
+}
+
 .cust-empty h1,
 .cust-empty h2 {
   color: var(--brown);
@@ -1938,6 +1971,38 @@ code {
   border: 1px solid #ebe4d8;
   border-top: 5px solid var(--accent);
   box-shadow: 0 1px 2px rgb(60 36 20 / 0.06), 0 8px 18px -12px rgb(60 36 20 / 0.3);
+}
+
+/* "+N ใหม่ ↓": sits on the bottom edge of the column (or the viewport on phones) until the cook scrolls to it */
+.k-more {
+  position: sticky;
+  bottom: 8px;
+  z-index: 2;
+  flex: none;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-top: auto;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font: 700 15px/1 var(--display);
+  box-shadow: 0 10px 22px -10px rgb(60 36 20 / 0.55);
+  cursor: pointer;
+  animation: up 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.k-more:hover {
+  filter: brightness(0.94);
+}
+
+.k-card:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
 }
 
 .k-card.is-fresh {

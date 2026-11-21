@@ -53,6 +53,8 @@ function Board({ logout }: { logout: () => void }) {
   const [sound, setSound] = useState(false)
   // served orders drop out of the kitchen feed; keep the last few here so a mis-tap can be undone
   const [served, setServed] = useState<OrderView[]>([])
+  // arrivals the cook has not had on screen yet; cleared when the ticket scrolls into view
+  const [unseen, setUnseen] = useState<Set<number>>(new Set())
   const audio = useRef<AudioContext | null>(null)
   const seen = useRef<Set<number> | null>(null)
   const toast = useToast()
@@ -69,10 +71,12 @@ function Board({ logout }: { logout: () => void }) {
         const added = ids.filter((id) => !seen.current!.has(id))
         if (added.length) {
           setFresh((f) => new Set([...f, ...added]))
+          setUnseen((u) => new Set([...u, ...added]))
           window.setTimeout(() => setFresh((f) => new Set([...f].filter((x) => !added.includes(x)))), 9000)
         }
       }
       seen.current = new Set([...(seen.current ?? []), ...ids])
+      setUnseen((u) => (u.size && [...u].some((id) => !ids.includes(id)) ? new Set([...u].filter((id) => ids.includes(id))) : u))
     } catch {
       /* offline: keep last board, live hook retries */
     }
@@ -111,8 +115,19 @@ function Board({ logout }: { logout: () => void }) {
     })
   }
 
+  const markSeen = useCallback((id: number) => setUnseen((u) => (u.has(id) ? new Set([...u].filter((x) => x !== id)) : u)), [])
+
+  const reveal = (id: number) => {
+    const el = document.getElementById(`ticket-${id}`)
+    if (!el) return
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el.scrollIntoView({ block: 'nearest', behavior: calm ? 'auto' : 'smooth' })
+    el.focus({ preventScroll: true })
+  }
+
   const move = async (o: OrderView, status: OrderStatus) => {
     setConfirm(null)
+    markSeen(o.id)
     const moved = { ...o, status, updated_at: Date.now() }
     setData((d) => d && { ...d, orders: d.orders.map((x) => (x.id === o.id ? moved : x)).filter((x) => x.status !== 'served' && x.status !== 'cancelled') })
     if (status === 'served') setServed((s) => [moved, ...s.filter((x) => x.id !== o.id)].slice(0, RECENT))
@@ -210,6 +225,7 @@ function Board({ logout }: { logout: () => void }) {
         <div className="k-cols">
           {COLS.map((col) => {
             const list = col.status === 'served' ? served : orders.filter((o) => o.status === col.status)
+            const hidden = list.filter((o) => unseen.has(o.id))
             return (
               <section key={col.status} className={`k-col c-${col.status}`} aria-labelledby={`kc-${col.status}`}>
                 <h2 id={`kc-${col.status}`}>
@@ -245,11 +261,19 @@ function Board({ logout }: { logout: () => void }) {
                         col={col}
                         now={now}
                         fresh={fresh.has(o.id)}
+                        unseen={unseen.has(o.id)}
+                        onSeen={markSeen}
                         confirming={confirm === o.id}
                         onMove={(s) => move(o, s)}
                         onConfirm={(on) => setConfirm(on ? o.id : null)}
                       />
                     ),
+                  )}
+                  {hidden.length > 0 && (
+                    <button className="k-more" onClick={() => reveal(hidden[0].id)}>
+                      +{hidden.length} ใหม่
+                      <Icon name="down" size={18} />
+                    </button>
                   )}
                 </div>
               </section>
@@ -266,6 +290,8 @@ function Ticket({
   col,
   now,
   fresh,
+  unseen,
+  onSeen,
   confirming,
   onMove,
   onConfirm,
@@ -274,18 +300,25 @@ function Ticket({
   col: Col
   now: number
   fresh: boolean
+  unseen: boolean
+  onSeen: (id: number) => void
   confirming: boolean
   onMove: (s: OrderStatus) => void
   onConfirm: (on: boolean) => void
 }) {
   const wait = Math.floor((now - o.created_at) / 60_000)
   const box = useRef<HTMLElement>(null)
-  // bring a just-arrived ticket into view inside its column
+  // never scroll the board for the cook (that pushed the oldest ticket off screen);
+  // just note when an arrival has actually been on screen so the "+N ใหม่" pill can drop it
   useEffect(() => {
-    if (fresh) box.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
-  }, [fresh])
+    const el = box.current
+    if (!unseen || !el) return
+    const io = new IntersectionObserver((es) => es.some((e) => e.isIntersecting) && onSeen(o.id), { threshold: 0.6 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [unseen, onSeen, o.id])
   return (
-    <article ref={box} className={`k-card ${fresh ? 'is-fresh' : ''} ${wait >= 20 ? 'late' : wait >= 10 ? 'slow' : ''}`}>
+    <article ref={box} id={`ticket-${o.id}`} tabIndex={-1} aria-label={`โต๊ะ ${o.table_label} ออเดอร์ #${o.id}`} className={`k-card ${fresh ? 'is-fresh' : ''} ${wait >= 20 ? 'late' : wait >= 10 ? 'slow' : ''}`}>
       <header>
         <b className="k-table">
           <small>โต๊ะ</small>
