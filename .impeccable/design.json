@@ -1,0 +1,610 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-20T00:00:00Z",
+  "title": "Design System: เส้นทอง · Senthong Noodles",
+  "extensions": {
+    "colorMeta": {
+      "chili-red": {
+        "role": "primary",
+        "displayName": "Chili Red",
+        "canonical": "#c0272d",
+        "tonalRamp": [
+          "oklch(15% 0.104 25)",
+          "oklch(26% 0.147 25)",
+          "oklch(38% 0.188 25)",
+          "oklch(49% 0.188 25)",
+          "oklch(61% 0.188 25)",
+          "oklch(72% 0.188 25)",
+          "oklch(84% 0.147 25)",
+          "oklch(95% 0.104 25)"
+        ]
+      },
+      "chili-red-deep": {
+        "role": "primary",
+        "displayName": "Chili Red Deep",
+        "canonical": "#9a1d22",
+        "tonalRamp": [
+          "oklch(15% 0.088 25)",
+          "oklch(26% 0.125 25)",
+          "oklch(38% 0.160 25)",
+          "oklch(49% 0.160 25)",
+          "oklch(61% 0.160 25)",
+          "oklch(72% 0.160 25)",
+          "oklch(84% 0.125 25)",
+          "oklch(95% 0.088 25)"
+        ]
+      },
+      "egg-noodle-gold": {
+        "role": "secondary",
+        "displayName": "Egg-Noodle Gold",
+        "canonical": "#f4b400",
+        "tonalRamp": [
+          "oklch(15% 0.091 83)",
+          "oklch(26% 0.129 83)",
+          "oklch(38% 0.166 83)",
+          "oklch(49% 0.166 83)",
+          "oklch(61% 0.166 83)",
+          "oklch(72% 0.166 83)",
+          "oklch(84% 0.129 83)",
+          "oklch(95% 0.091 83)"
+        ]
+      },
+      "egg-noodle-gold-light": {
+        "role": "secondary",
+        "displayName": "Egg-Noodle Gold Light",
+        "canonical": "#ffd45c",
+        "tonalRamp": [
+          "oklch(15% 0.079 89)",
+          "oklch(26% 0.112 89)",
+          "oklch(38% 0.144 89)",
+          "oklch(49% 0.144 89)",
+          "oklch(61% 0.144 89)",
+          "oklch(72% 0.144 89)",
+          "oklch(84% 0.112 89)",
+          "oklch(95% 0.079 89)"
+        ]
+      },
+      "soy-brown": {
+        "role": "neutral",
+        "displayName": "Soy Brown",
+        "canonical": "#3b2417",
+        "tonalRamp": [
+          "oklch(15% 0.023 50)",
+          "oklch(26% 0.032 50)",
+          "oklch(38% 0.042 50)",
+          "oklch(49% 0.042 50)",
+          "oklch(61% 0.042 50)",
+          "oklch(72% 0.042 50)",
+          "oklch(84% 0.032 50)",
+          "oklch(95% 0.023 50)"
+        ]
+      },
+      "soy-brown-light": {
+        "role": "neutral",
+        "displayName": "Soy Brown Light",
+        "canonical": "#5a3a26",
+        "tonalRamp": [
+          "oklch(15% 0.030 52)",
+          "oklch(26% 0.043 52)",
+          "oklch(38% 0.055 52)",
+          "oklch(49% 0.055 52)",
+          "oklch(61% 0.055 52)",
+          "oklch(72% 0.055 52)",
+          "oklch(84% 0.043 52)",
+          "oklch(95% 0.030 52)"
+        ]
+      },
+      "wok-black": {
+        "role": "neutral",
+        "displayName": "Wok Black",
+        "canonical": "#1f1a16",
+        "tonalRamp": [
+          "oklch(15% 0.006 61)",
+          "oklch(26% 0.009 61)",
+          "oklch(38% 0.011 61)",
+          "oklch(49% 0.011 61)",
+          "oklch(61% 0.011 61)",
+          "oklch(72% 0.011 61)",
+          "oklch(84% 0.009 61)",
+          "oklch(95% 0.006 61)"
+        ]
+      },
+      "rice-paper": {
+        "role": "neutral",
+        "displayName": "Rice Paper",
+        "canonical": "#fbf6ee",
+        "tonalRamp": [
+          "oklch(15% 0.007 80)",
+          "oklch(26% 0.009 80)",
+          "oklch(38% 0.012 80)",
+          "oklch(49% 0.012 80)",
+          "oklch(61% 0.012 80)",
+          "oklch(72% 0.012 80)",
+          "oklch(84% 0.009 80)",
+          "oklch(95% 0.007 80)"
+        ]
+      },
+      "rice-paper-deep": {
+        "role": "neutral",
+        "displayName": "Rice Paper Deep",
+        "canonical": "#f3eadb",
+        "tonalRamp": [
+          "oklch(15% 0.012 81)",
+          "oklch(26% 0.017 81)",
+          "oklch(38% 0.022 81)",
+          "oklch(49% 0.022 81)",
+          "oklch(61% 0.022 81)",
+          "oklch(72% 0.022 81)",
+          "oklch(84% 0.017 81)",
+          "oklch(95% 0.012 81)"
+        ]
+      },
+      "bowl-white": {
+        "role": "neutral",
+        "displayName": "Bowl White",
+        "canonical": "#fffdf8",
+        "tonalRamp": [
+          "oklch(15% 0.004 89)",
+          "oklch(26% 0.005 89)",
+          "oklch(38% 0.007 89)",
+          "oklch(49% 0.007 89)",
+          "oklch(61% 0.007 89)",
+          "oklch(72% 0.007 89)",
+          "oklch(84% 0.005 89)",
+          "oklch(95% 0.004 89)"
+        ]
+      },
+      "pure-white": {
+        "role": "neutral",
+        "displayName": "Pure White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.000 90)",
+          "oklch(26% 0.000 90)",
+          "oklch(38% 0.000 90)",
+          "oklch(49% 0.000 90)",
+          "oklch(61% 0.000 90)",
+          "oklch(72% 0.000 90)",
+          "oklch(84% 0.000 90)",
+          "oklch(95% 0.000 90)"
+        ]
+      },
+      "broth-line": {
+        "role": "neutral",
+        "displayName": "Broth Line",
+        "canonical": "#eadfcc",
+        "tonalRamp": [
+          "oklch(15% 0.015 81)",
+          "oklch(26% 0.022 81)",
+          "oklch(38% 0.028 81)",
+          "oklch(49% 0.028 81)",
+          "oklch(61% 0.028 81)",
+          "oklch(72% 0.028 81)",
+          "oklch(84% 0.022 81)",
+          "oklch(95% 0.015 81)"
+        ]
+      },
+      "broth-line-light": {
+        "role": "neutral",
+        "displayName": "Broth Line Light",
+        "canonical": "#f1e8d8",
+        "tonalRamp": [
+          "oklch(15% 0.013 82)",
+          "oklch(26% 0.018 82)",
+          "oklch(38% 0.023 82)",
+          "oklch(49% 0.023 82)",
+          "oklch(61% 0.023 82)",
+          "oklch(72% 0.023 82)",
+          "oklch(84% 0.018 82)",
+          "oklch(95% 0.013 82)"
+        ]
+      },
+      "soy-ink": {
+        "role": "neutral",
+        "displayName": "Soy Ink",
+        "canonical": "#241e19",
+        "tonalRamp": [
+          "oklch(15% 0.007 62)",
+          "oklch(26% 0.010 62)",
+          "oklch(38% 0.013 62)",
+          "oklch(49% 0.013 62)",
+          "oklch(61% 0.013 62)",
+          "oklch(72% 0.013 62)",
+          "oklch(84% 0.010 62)",
+          "oklch(95% 0.007 62)"
+        ]
+      },
+      "tea-grey": {
+        "role": "neutral",
+        "displayName": "Tea Grey",
+        "canonical": "#776b5d",
+        "tonalRamp": [
+          "oklch(15% 0.014 72)",
+          "oklch(26% 0.020 72)",
+          "oklch(38% 0.026 72)",
+          "oklch(49% 0.026 72)",
+          "oklch(61% 0.026 72)",
+          "oklch(72% 0.026 72)",
+          "oklch(84% 0.020 72)",
+          "oklch(95% 0.014 72)"
+        ]
+      },
+      "herb-green": {
+        "role": "status",
+        "displayName": "Herb Green",
+        "canonical": "#2f7d4a",
+        "tonalRamp": [
+          "oklch(15% 0.061 152)",
+          "oklch(26% 0.086 152)",
+          "oklch(38% 0.111 152)",
+          "oklch(49% 0.111 152)",
+          "oklch(61% 0.111 152)",
+          "oklch(72% 0.111 152)",
+          "oklch(84% 0.086 152)",
+          "oklch(95% 0.061 152)"
+        ]
+      },
+      "chili-orange": {
+        "role": "status",
+        "displayName": "Chili Orange",
+        "canonical": "#d9731c",
+        "tonalRamp": [
+          "oklch(15% 0.086 54)",
+          "oklch(26% 0.121 54)",
+          "oklch(38% 0.156 54)",
+          "oklch(49% 0.156 54)",
+          "oklch(61% 0.156 54)",
+          "oklch(72% 0.156 54)",
+          "oklch(84% 0.121 54)",
+          "oklch(95% 0.086 54)"
+        ]
+      },
+      "kitchen-bg": {
+        "role": "neutral",
+        "displayName": "Kitchen Background",
+        "canonical": "#f2eee7",
+        "tonalRamp": [
+          "oklch(15% 0.006 82)",
+          "oklch(26% 0.008 82)",
+          "oklch(38% 0.010 82)",
+          "oklch(49% 0.010 82)",
+          "oklch(61% 0.010 82)",
+          "oklch(72% 0.010 82)",
+          "oklch(84% 0.008 82)",
+          "oklch(95% 0.006 82)"
+        ]
+      },
+      "kitchen-new": {
+        "role": "status",
+        "displayName": "Kitchen New",
+        "canonical": "#d4372c",
+        "tonalRamp": [
+          "oklch(15% 0.107 29)",
+          "oklch(26% 0.152 29)",
+          "oklch(38% 0.195 29)",
+          "oklch(49% 0.195 29)",
+          "oklch(61% 0.195 29)",
+          "oklch(72% 0.195 29)",
+          "oklch(84% 0.152 29)",
+          "oklch(95% 0.107 29)"
+        ]
+      },
+      "kitchen-new-soft": {
+        "role": "status",
+        "displayName": "Kitchen New Soft",
+        "canonical": "#fde8e4",
+        "tonalRamp": [
+          "oklch(15% 0.013 30)",
+          "oklch(26% 0.018 30)",
+          "oklch(38% 0.024 30)",
+          "oklch(49% 0.024 30)",
+          "oklch(61% 0.024 30)",
+          "oklch(72% 0.024 30)",
+          "oklch(84% 0.018 30)",
+          "oklch(95% 0.013 30)"
+        ]
+      },
+      "kitchen-cook-soft": {
+        "role": "status",
+        "displayName": "Kitchen Cooking Soft",
+        "canonical": "#fff1cc",
+        "tonalRamp": [
+          "oklch(15% 0.028 90)",
+          "oklch(26% 0.039 90)",
+          "oklch(38% 0.050 90)",
+          "oklch(49% 0.050 90)",
+          "oklch(61% 0.050 90)",
+          "oklch(72% 0.050 90)",
+          "oklch(84% 0.039 90)",
+          "oklch(95% 0.028 90)"
+        ]
+      },
+      "kitchen-ready": {
+        "role": "status",
+        "displayName": "Kitchen Ready",
+        "canonical": "#23804a",
+        "tonalRamp": [
+          "oklch(15% 0.066 153)",
+          "oklch(26% 0.094 153)",
+          "oklch(38% 0.120 153)",
+          "oklch(49% 0.120 153)",
+          "oklch(61% 0.120 153)",
+          "oklch(72% 0.120 153)",
+          "oklch(84% 0.094 153)",
+          "oklch(95% 0.066 153)"
+        ]
+      },
+      "kitchen-ready-soft": {
+        "role": "status",
+        "displayName": "Kitchen Ready Soft",
+        "canonical": "#ddf2e3",
+        "tonalRamp": [
+          "oklch(15% 0.016 155)",
+          "oklch(26% 0.023 155)",
+          "oklch(38% 0.030 155)",
+          "oklch(49% 0.030 155)",
+          "oklch(61% 0.030 155)",
+          "oklch(72% 0.030 155)",
+          "oklch(84% 0.023 155)",
+          "oklch(95% 0.016 155)"
+        ]
+      },
+      "kitchen-done": {
+        "role": "status",
+        "displayName": "Kitchen Served",
+        "canonical": "#8a7b6b",
+        "tonalRamp": [
+          "oklch(15% 0.017 69)",
+          "oklch(26% 0.023 69)",
+          "oklch(38% 0.030 69)",
+          "oklch(49% 0.030 69)",
+          "oklch(61% 0.030 69)",
+          "oklch(72% 0.030 69)",
+          "oklch(84% 0.023 69)",
+          "oklch(95% 0.017 69)"
+        ]
+      },
+      "kitchen-done-soft": {
+        "role": "status",
+        "displayName": "Kitchen Served Soft",
+        "canonical": "#efe9e0",
+        "tonalRamp": [
+          "oklch(15% 0.008 78)",
+          "oklch(26% 0.011 78)",
+          "oklch(38% 0.014 78)",
+          "oklch(49% 0.014 78)",
+          "oklch(61% 0.014 78)",
+          "oklch(72% 0.014 78)",
+          "oklch(84% 0.011 78)",
+          "oklch(95% 0.008 78)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home hero and promo headline."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Menu section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Dish names."
+      },
+      "price": {
+        "displayName": "Price",
+        "purpose": "Dish prices in chili red."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Copy and descriptions."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, chips, eyebrows."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow",
+        "value": "0 1px 2px rgb(60 40 20 / 0.06), 0 8px 24px -12px rgb(60 40 20 / 0.18)",
+        "purpose": "Panels (base token)."
+      },
+      {
+        "name": "dish",
+        "value": "0 1px 2px rgb(60 36 20 / 0.06), 0 10px 24px -16px rgb(60 36 20 / 0.35)",
+        "purpose": "Dish card at rest."
+      },
+      {
+        "name": "dish-hover",
+        "value": "0 1px 2px rgb(60 36 20 / 0.06), 0 16px 30px -16px rgb(60 36 20 / 0.45)",
+        "purpose": "Dish card on hover."
+      },
+      {
+        "name": "kitchen-card",
+        "value": "0 1px 2px rgb(60 36 20 / 0.06), 0 8px 18px -12px rgb(60 36 20 / 0.3)",
+        "purpose": "Kitchen order cards."
+      },
+      {
+        "name": "lip-red",
+        "value": "0 3px 0 var(--red-2)",
+        "purpose": "Primary button lip."
+      },
+      {
+        "name": "lip-gold",
+        "value": "0 3px 0 #c99504",
+        "purpose": "Gold button lip."
+      },
+      {
+        "name": "cart-bar",
+        "value": "0 16px 30px -12px rgb(40 22 10 / 0.6)",
+        "purpose": "Floating cart bar."
+      },
+      {
+        "name": "sheet",
+        "value": "0 -20px 50px -20px rgb(0 0 0 / 0.4)",
+        "purpose": "Bottom sheet."
+      },
+      {
+        "name": "in-cart-ring",
+        "value": "0 0 0 2px var(--gold)",
+        "purpose": "Dish already in cart."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state",
+        "value": "0.15s",
+        "purpose": "Color and shadow transitions."
+      },
+      {
+        "name": "press",
+        "value": "0.1s",
+        "purpose": "Button press (1px) and add-button scale (0.92)."
+      },
+      {
+        "name": "sheet-up",
+        "value": "0.28s cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "purpose": "Bottom sheet entrance."
+      },
+      {
+        "name": "rise",
+        "value": "0.25s ease-out",
+        "purpose": "Cart bar, toasts."
+      },
+      {
+        "name": "flash",
+        "value": "1.2s ease-in-out x3",
+        "purpose": "New kitchen order gold ring."
+      },
+      {
+        "name": "live-pulse",
+        "value": "1.6s ease-out infinite",
+        "purpose": "Live connection dot."
+      },
+      {
+        "name": "bell-ring",
+        "value": "1.2s ease-in-out infinite",
+        "purpose": "Table calling staff."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "xs",
+        "value": "480px"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "sheet",
+        "value": "700px"
+      },
+      {
+        "name": "md",
+        "value": "900px"
+      },
+      {
+        "name": "lg",
+        "value": "1100px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Chili-red pill with a solid deep-red lip.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">สั่งอาหาร · ฿120</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 20px; border: 1.5px solid transparent; border-radius: 999px; font: 600 15px/1.2 'Prompt', 'IBM Plex Sans Thai', system-ui, sans-serif; white-space: nowrap; cursor: pointer; transition: background-color 0.15s, transform 0.1s, box-shadow 0.15s; } .ds-btn:active { transform: translateY(1px); } .ds-btn:focus-visible { outline: 3px solid #f4b400; outline-offset: 2px; } .ds-btn-primary { background: #c0272d; color: #fff; box-shadow: 0 3px 0 #9a1d22; } .ds-btn-primary:hover { background: #c62a37; }"
+    },
+    {
+      "name": "Gold Button",
+      "kind": "button",
+      "refersTo": "button-gold",
+      "description": "Gold pill used for staff calls and highlights.",
+      "html": "<button class=\"ds-btn-gold\">เรียกพนักงาน</button>",
+      "css": ".ds-btn-gold { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 20px; border: 1.5px solid transparent; border-radius: 999px; background: #f4b400; color: #1f1a16; box-shadow: 0 3px 0 #c99504; font: 600 15px/1.2 'Prompt', sans-serif; cursor: pointer; transition: background-color 0.15s, transform 0.1s; } .ds-btn-gold:hover { background: #ffd45c; } .ds-btn-gold:active { transform: translateY(1px); } .ds-btn-gold:focus-visible { outline: 3px solid #f4b400; outline-offset: 2px; }"
+    },
+    {
+      "name": "Category Chips",
+      "kind": "chip",
+      "refersTo": "category-chip",
+      "description": "Sticky menu category filter; selected chip is soy brown.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-selected=\"true\">ก๋วยเตี๋ยว</button><button class=\"ds-chip\">ข้าว</button><button class=\"ds-chip\">เครื่องดื่ม</button></div>",
+      "css": ".ds-chips { display: flex; gap: 8px; padding: 10px 0; } .ds-chip { min-height: 40px; padding: 6px 16px; border: 1.5px solid #eadfcc; border-radius: 999px; background: #fff; font: 600 14.5px/1.2 'Prompt', sans-serif; color: #5a3a26; cursor: pointer; transition: background-color 0.15s, color 0.15s, border-color 0.15s; } .ds-chip:focus-visible { outline: 3px solid #f4b400; outline-offset: 2px; } .ds-chip[aria-selected='true'] { background: #3b2417; border-color: #3b2417; color: #fff; }"
+    },
+    {
+      "name": "Option Pills",
+      "kind": "input",
+      "refersTo": "option-pill",
+      "description": "Dish option choices inside the bottom sheet.",
+      "html": "<div class=\"ds-opts\"><button class=\"ds-pill\" aria-checked=\"true\">เส้นเล็ก</button><button class=\"ds-pill\">เส้นใหญ่</button><button class=\"ds-pill\">บะหมี่ <small>+10</small></button></div>",
+      "css": ".ds-opts { display: flex; flex-wrap: wrap; gap: 8px; } .ds-pill { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 16px; border: 1.5px solid #eadfcc; border-radius: 14px; background: #fff; font: 500 15px/1.2 'IBM Plex Sans Thai', sans-serif; color: #241e19; cursor: pointer; transition: background-color 0.12s, border-color 0.12s; } .ds-pill small { font: 600 12.5px 'Prompt', sans-serif; color: #c0272d; } .ds-pill:focus-visible { outline: 3px solid #f4b400; outline-offset: 2px; } .ds-pill[aria-checked='true'] { border-color: #c0272d; background: #fff1ed; color: #9a1d22; font-weight: 600; }"
+    },
+    {
+      "name": "Dish Card",
+      "kind": "card",
+      "refersTo": "dish-card",
+      "description": "Menu card with a radial plate, red price and add button.",
+      "html": "<div class=\"ds-dish\"><div class=\"ds-art\"><svg viewBox=\"0 0 24 24\" width=\"72\" height=\"72\"><ellipse cx=\"12\" cy=\"14\" rx=\"9\" ry=\"5\" fill=\"#fffdf8\" stroke=\"#3b2417\" stroke-width=\"1.2\"/><path d=\"M5 13c2-3 12-3 14 0\" stroke=\"#f4b400\" stroke-width=\"1.6\" fill=\"none\"/></svg></div><div class=\"ds-dbody\"><b>ก๋วยเตี๋ยวต้มยำ</b><span class=\"ds-desc\">หมูสับ ลูกชิ้น ไข่ต้ม</span><span class=\"ds-price\">฿60</span></div><button class=\"ds-add\" aria-label=\"เพิ่ม\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\"><path d=\"M12 5v14M5 12h14\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg></button></div>",
+      "css": ".ds-dish { position: relative; width: 220px; border-radius: 20px; background: #fff; box-shadow: 0 1px 2px rgb(60 36 20 / 0.06), 0 10px 24px -16px rgb(60 36 20 / 0.35); transition: transform 0.15s, box-shadow 0.15s; font-family: 'IBM Plex Sans Thai', sans-serif; } .ds-dish:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgb(60 36 20 / 0.06), 0 16px 30px -16px rgb(60 36 20 / 0.45); } .ds-art { display: grid; place-items: center; aspect-ratio: 5 / 4; margin: 6px 6px 0; border-radius: 16px; background: radial-gradient(circle at 50% 55%, #fff6dc 0 38%, #fde7ad 70%, #f9d886 100%); } .ds-dbody { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px 14px; } .ds-dbody b { font: 600 15.5px/1.35 'Prompt', sans-serif; color: #241e19; } .ds-desc { font-size: 12.5px; line-height: 1.5; color: #776b5d; } .ds-price { padding-top: 6px; font: 700 18px/1.2 'Prompt', sans-serif; color: #c0272d; } .ds-add { position: absolute; right: 10px; bottom: 10px; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 14px; background: #c0272d; box-shadow: 0 6px 14px -6px rgb(192 39 45 / 0.7); cursor: pointer; transition: transform 0.1s, background-color 0.15s; } .ds-add:hover { background: #9a1d22; } .ds-add:active { transform: scale(0.92); } .ds-add:focus-visible { outline: 3px solid #f4b400; outline-offset: 2px; }"
+    },
+    {
+      "name": "Cart Bar",
+      "kind": "custom",
+      "refersTo": "cart-bar",
+      "description": "Floating soy-brown cart summary at the bottom of the menu.",
+      "html": "<button class=\"ds-cart\"><span class=\"ds-cart-ico\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\"><path d=\"M4 5h2l2 10h10l2-7H7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"10\" cy=\"19\" r=\"1.5\" fill=\"currentColor\"/><circle cx=\"17\" cy=\"19\" r=\"1.5\" fill=\"currentColor\"/></svg><span class=\"ds-cart-n\">3</span></span><span class=\"ds-cart-t\"><b>ดูตะกร้า</b><small>3 รายการ</small></span><span class=\"ds-cart-sum\">฿180</span></button>",
+      "css": ".ds-cart { display: flex; align-items: center; gap: 12px; width: 360px; min-height: 64px; padding: 8px 18px 8px 8px; border: 0; border-radius: 20px; background: #3b2417; color: #fff; text-align: left; box-shadow: 0 16px 30px -12px rgb(40 22 10 / 0.6); cursor: pointer; } .ds-cart:focus-visible { outline: 3px solid #f4b400; outline-offset: 2px; } .ds-cart-ico { position: relative; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: #f4b400; color: #3b2417; } .ds-cart-n { position: absolute; top: -6px; right: -6px; display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border: 2px solid #3b2417; border-radius: 999px; background: #c0272d; color: #fff; font: 700 12px/1 'Prompt', sans-serif; } .ds-cart-t { display: grid; flex: 1; line-height: 1.3; } .ds-cart-t b { font: 600 16px 'Prompt', sans-serif; } .ds-cart-t small { font-size: 12.5px; color: #d8c6b2; } .ds-cart-sum { font: 700 21px 'Prompt', sans-serif; color: #f4b400; }"
+    },
+    {
+      "name": "Kitchen Order Card",
+      "kind": "card",
+      "refersTo": "kitchen-card",
+      "description": "Status-edged order card with an advance button colored by the next state.",
+      "html": "<div class=\"ds-kcard\"><header><span class=\"ds-ktable\">โต๊ะ 4</span><span class=\"ds-kwait\">3 นาที</span></header><ul><li><span class=\"ds-q\">2</span> ก๋วยเตี๋ยวต้มยำ</li><li><span class=\"ds-q\">1</span> ชาเย็น</li></ul><button class=\"ds-go\">เริ่มทำ</button></div>",
+      "css": ".ds-kcard { width: 280px; border-radius: 16px; background: #fff; border: 1px solid #ebe4d8; border-top: 5px solid #d4372c; box-shadow: 0 1px 2px rgb(60 36 20 / 0.06), 0 8px 18px -12px rgb(60 36 20 / 0.3); font-family: 'IBM Plex Sans Thai', sans-serif; color: #241e19; } .ds-kcard header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #f1ebe1; } .ds-ktable { font: 700 20px 'Prompt', sans-serif; } .ds-kwait { font: 600 13px 'Prompt', sans-serif; color: #776b5d; } .ds-kcard ul { list-style: none; margin: 0; padding: 8px 14px; display: grid; gap: 6px; } .ds-q { display: inline-grid; place-items: center; min-width: 26px; height: 26px; margin-right: 6px; border-radius: 8px; background: #3b2417; color: #fff; font: 700 14px 'Prompt', sans-serif; } .ds-go { display: block; width: calc(100% - 20px); margin: 4px 10px 10px; min-height: 52px; border: 0; border-radius: 14px; background: #d4372c; color: #fff; font: 600 17px 'Prompt', sans-serif; cursor: pointer; } .ds-go:hover { filter: brightness(1.08); } .ds-go:focus-visible { outline: 3px solid #f4b400; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lantern-Lit Noodle Counter",
+    "overview": "A warm Thai-Chinese noodle shop rendered as an app: chili red and egg-noodle gold over rice-paper cream, with soy brown as the grounding dark. The customer side is appetite-first and phone-first: big illustrated dish cards on soft golden radial \"plates\", a sticky category chip bar, bottom sheets for options, and a floating soy-brown cart bar. Everything is rounded, soft and tappable (44px minimum).\n\nThe staff side keeps the same family but turns functional. The kitchen board is a four-column status rail (new, cooking, ready, served) on a neutral kitchen background, where each card carries a 5px colored top edge and a 52px advance button colored by its next state. The admin uses a white top bar, pill tabs and plain bordered panels.\n\nDepth is soft, warm-brown and layered, with a small hard \"lip\" (`0 3px 0`) under the primary red and gold buttons that makes them feel pressable.",
+    "keyCharacteristics": [
+      "Chili red (#c0272d) for actions and prices, egg-noodle gold (#f4b400) for highlights and \"in cart\", soy brown (#3b2417) for the cart bar, selected chips and headings.",
+      "Pill buttons and chips; 20px dish cards; 28px bottom sheets.",
+      "Hand-drawn SVG food on tinted radial plates (five tones), never photos.",
+      "Warm brown-tinted soft shadows; red and gold buttons carry a solid 3px lip.",
+      "Realtime cues: pulsing green live dot, flashing gold outline on new kitchen cards, ringing bell on tables that call staff."
+    ],
+    "rules": [
+      {
+        "name": "The Red Means Buy Rule",
+        "body": "Chili red is for the action that spends money (add, order, primary) and for the price itself. Gold says \"you have this\"; brown says \"you are here\".",
+        "section": "colors"
+      },
+      {
+        "name": "The Status Lane Rule",
+        "body": "In the kitchen, each status owns one hue and every element in that lane (dot, count, top edge) uses it. The advance button takes the color of the next status.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do use chili red (#c0272d) for buy actions and prices, gold (#f4b400) for \"in cart\" and focus, soy brown (#3b2417) for selected navigation.",
+      "Do keep touch targets at 44px or more on the customer side and 52px for kitchen actions.",
+      "Do draw food as SVG on one of the five radial plate tones.",
+      "Do keep each kitchen status in its own hue across dot, count, card edge and button.",
+      "Do use two-step inline confirms for destructive actions."
+    ],
+    "donts": [
+      "Don't use photos of food.",
+      "Don't use `window.alert` or `confirm`.",
+      "Don't use cool greys or pure-black shadows on cards; shadows are brown-tinted.",
+      "Don't introduce a second display font; Prompt carries all headings, prices and numbers."
+    ]
+  }
+}
