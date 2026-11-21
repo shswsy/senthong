@@ -10,6 +10,31 @@ import { useToast } from '../components/Toast'
 import { ago, useLive, useNow } from '../live'
 import { Link, navigate } from '../router'
 
+// Thai names for the drawn dishes, so the art picker reads as food, not code keys
+const ART_TH: Record<Art, string> = {
+  soup: 'ก๋วยเตี๋ยวน้ำตก',
+  tomyum: 'ต้มยำ',
+  pink: 'เย็นตาโฟ',
+  beef: 'ก๋วยเตี๋ยวเนื้อ',
+  dry: 'ก๋วยเตี๋ยวแห้ง',
+  krapow: 'กะเพรา',
+  friedrice: 'ข้าวผัด',
+  padsew: 'ผัดซีอิ๊ว',
+  radna: 'ราดหน้า',
+  garlic: 'กระเทียมพริกไทย',
+  balls: 'ลูกชิ้น',
+  wonton: 'เกี๊ยว',
+  omelet: 'ไข่เจียว',
+  porkfried: 'หมูทอด',
+  soda: 'น้ำอัดลม',
+  water: 'น้ำเปล่า',
+  bualoy: 'บัวลอย',
+  tubtim: 'ทับทิมกรอบ',
+  greentea: 'ชาเขียว',
+  oliang: 'โอเลี้ยง',
+  thaitea: 'ชาไทย',
+}
+
 const TABS = [
   { path: '/admin', label: 'โต๊ะ & บิล' },
   { path: '/admin/menu', label: 'จัดการเมนู' },
@@ -135,7 +160,7 @@ function TablesTab({ rev }: { rev: number }) {
           <li className="t-bill">ขอเช็คบิล</li>
         </ul>
       </section>
-      <aside className="panel" aria-live="polite">
+      <aside className="panel">
         {sel ? <BillPanel key={sel} id={sel} rev={rev} onClosed={() => setSel(null)} /> : <p className="panel-empty">เลือกโต๊ะเพื่อดูบิลและปิดโต๊ะ</p>}
       </aside>
     </div>
@@ -209,7 +234,7 @@ function BillPanel({ id, rev, onClosed }: { id: number; rev: number; onClosed: (
           </li>
         ))}
       </ul>
-      <div className="sum-row big">
+      <div className="sum-row big" aria-live="polite">
         <span>ยอดชำระ</span>
         <b>{baht(s.total)}</b>
       </div>
@@ -396,7 +421,7 @@ function ItemForm({ draft, categories, onDone }: { draft: Draft; categories: Men
         <legend>รูป</legend>
         <div className="art-pick">
           {ART_KEYS.map((a) => (
-            <button type="button" key={a} aria-pressed={d.art === a} onClick={() => set('art', a)} aria-label={a}>
+            <button type="button" key={a} aria-pressed={d.art === a} onClick={() => set('art', a)} aria-label={ART_TH[a]}>
               <Food art={a} />
             </button>
           ))}

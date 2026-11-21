@@ -363,6 +363,42 @@ code {
   color: var(--muted);
 }
 
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+/* call staff from anywhere on the table page */
+.call-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brown);
+  cursor: pointer;
+}
+
+.call-btn:disabled {
+  border-color: #cfe6d5;
+  background: #e3f1e6;
+  color: #1f6b3a;
+  cursor: default;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .table-badge {
   display: inline-flex;
   align-items: center;
@@ -579,7 +615,7 @@ code {
   transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
-.chips button[aria-selected='true'] {
+.chips button[aria-current='true'] {
   background: var(--brown);
   border-color: var(--brown);
   color: #fff;
@@ -1084,6 +1120,12 @@ code {
   color: var(--red-2);
 }
 
+/* required and satisfied: calm green, no more alarm red */
+.opt legend small.req-ok {
+  background: #e3f1e6;
+  color: #1f6b3a;
+}
+
 .opt-row {
   clear: both;
   display: flex;
@@ -1357,8 +1399,8 @@ code {
   margin-left: auto;
   padding: 3px 12px;
   border-radius: 999px;
-  background: #fde7e3;
-  color: var(--red-2);
+  background: #f1e6d4;
+  color: var(--brown);
   font: 600 13px/1.5 var(--display);
 }
 
@@ -1379,7 +1421,7 @@ code {
 
 .s-cancelled {
   background: #eee;
-  color: #777;
+  color: #5e5e5e; /* #777 was 4.0:1 */
 }
 
 .st-cancelled {
@@ -1623,6 +1665,9 @@ code {
 }
 
 .toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 12px 16px;
   border-radius: 14px;
   background: var(--ink);
@@ -1638,6 +1683,30 @@ code {
 
 .t-warn {
   background: var(--red);
+  pointer-events: auto;
+}
+
+.toast-x {
+  flex: none;
+  margin-left: auto;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1.5px solid rgb(255 255 255 / 0.6);
+  border-radius: 999px;
+  background: none;
+  color: #fff;
+  font: 600 13px var(--display);
+  cursor: pointer;
+}
+
+/* kitchen: toasts sit bottom-right, off the header counts */
+.shell.a-kitchen ~ .toasts {
+  top: auto;
+  bottom: 16px;
+  left: auto;
+  right: 16px;
+  translate: none;
+  width: min(380px, 100% - 32px);
 }
 
 @keyframes drop {
