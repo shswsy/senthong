@@ -16,6 +16,9 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
       headers: { 'content-type': 'application/json', ...init.headers },
       credentials: 'same-origin',
       cache: 'no-store',
+      // reads give up after 12 s so a dead connection shows an error, not an endless spinner;
+      // writes are left alone (aborting an order POST could hide one that did go through)
+      signal: init.signal ?? (init.method ? undefined : AbortSignal.timeout(12_000)),
     })
   } catch {
     throw new ApiError('เชื่อมต่อไม่ได้ ตรวจสอบอินเทอร์เน็ต', 0)
